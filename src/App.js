@@ -1,25 +1,44 @@
- import React from 'react';
+import React, { useState } from 'react';
 import Accordion from './components/Accordion';
 import Search from './components/Search';
-const items = [
-	{ title : 'what is react?',
-	content: 'we can said react is front-end design api...something like that'
-	 },
-	{
-		title: 'what is ur name ?',
-		content : 'my naem is mg mg'
-	},
-	{
-		title: 'what we used react ?',
-		content :'is the best '
-	}
+import Dropdown from './components/Dropdown';
 
+const items = [
+  {
+    title: 'What is React?',
+    content: 'React is a front end javascript framework',
+  },
+  {
+    title: 'Why use React?',
+    content: 'React is a favorite JS library among engineers',
+  },
+  {
+    title: 'How do you use React?',
+    content: 'You use React by creating components',
+  },
 ];
+
+const options = [
+  {
+    label: 'The Color Red',
+    value: 'red',
+  },
+  {
+    label: 'The Color Green',
+    value: 'green',
+  },
+  {
+    label: 'A Shade of Blue',
+    value: 'blue',
+  },
+];
+
 export default () => {
-	return (
-		<div className="">
-			<Accordion items= {items} />
-			<Search />
-		</div>
-	);
-}
+	const [selected,setSelected] = useState (options[0]);
+  return (
+    <div className="ui container">
+
+      <Dropdown onSelectedChange={setSelected} options={options} selected= {selected}/>
+    </div>
+  );
+};
