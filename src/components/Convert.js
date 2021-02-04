@@ -2,16 +2,37 @@ import axios from 'axios';
 import React , {useState,useEffect} from 'react';
 
 const Convert = ({language,text}) => {
+	
+	const [translated,setTranslated] = useState('');
+	const [debouncedText,setDebouncedText] = useState(text);
+
 	useEffect (() => {
-		axios.post ('https://translation.googleapis.com/language/translate/v2',{},{
+		const timerId = setTimeout (() => {
+			setDebouncedText(text);
+		},500);
+		return () => {
+			clearTimeout(timerId);
+		}
+
+	},[text]);
+
+	useEffect (() => {
+		const doTranslation = async () => {
+			const {data} = await axios.post ('https://translation.googleapis.com/language/translate/v2',{},{
 			params: {
-				q: text,
+				q: debouncedText,
 				target: language.value,
 				key: 'AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM'
 			}
 		})
-	}, [language,text]);
-	return <div />
+		
+		setTranslated(data.data.translations[0].translatedText);
+	}
+	doTranslation(); 
+	}, [language,debouncedText]);
+	return (
+		<div className="ui header">{translated}</div>
+	)
 }
 
 export default Convert;
